@@ -44,12 +44,12 @@ public class TestaMetodosProdutos {
 
     private static void exibeMenorPrecoDeUmProdutoComDesconto() {
 
-        Produto produtoComMenorDesconto = ListaDeProdutos.lista().stream()
+        Produto produtoComDesconto = ListaDeProdutos.lista().stream()
                 .filter(Produto::temDesconto)
                 .min(comparing(Produto::getPreco))
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
 
-        System.out.println(produtoComMenorDesconto.getPreco());
+        System.out.println(produtoComDesconto.getPreco());
     }
 
     private static void temCamisetaCinza() {
