@@ -49,7 +49,7 @@ public class TestaMetodosProdutos {
                 .min(comparing(Produto::getPreco))
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
 
-        System.out.println(produtoComMenorDesconto);
+        System.out.println(produtoComMenorDesconto.getPreco());
     }
 
     private static void temCamisetaCinza() {
