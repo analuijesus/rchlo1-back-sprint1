@@ -5,6 +5,7 @@ import br.com.rchlo.domain.ListaDeProdutos;
 import br.com.rchlo.domain.Produto;
 import br.com.rchlo.domain.Tamanho;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -20,20 +21,21 @@ public class TestaMetodosProdutos {
 
     }
 
-    private static Map<Tamanho, List<Produto>> exibeTamanhoDeCadaProduto() {
+    public static Map<Tamanho, List<Produto>> buscaTamanhoDeCadaProduto() {
 
         return Arrays.stream(Tamanho.values())
                 .collect(toMap(Function.identity(), TestaMetodosProdutos::produtosPorTamanho));
 
     }
 
-    private static Map<Cor, Integer> exibeQuantidadeDeCorPorProduto() {
+    public static Map<Cor, Integer> buscaQuantidadeDeCorPorProduto() {
 
         return Arrays.stream(Cor.values())
                 .collect(toMap(Function.identity(), TestaMetodosProdutos::quantidadePorCor));
+
     }
 
-    private static void exibeProdutoComMaiorPreco() {
+    public static void exibeProdutoComMaiorPreco() {
 
         Produto maiorPreco = ListaDeProdutos.lista().stream()
                 .max(comparing(Produto::getPreco))
@@ -42,31 +44,32 @@ public class TestaMetodosProdutos {
         System.out.println(maiorPreco);
     }
 
-    private static void exibeMenorPrecoDeUmProdutoComDesconto() {
+    public static void exibeMenorPrecoDeUmProdutoComDesconto() {
 
-        Produto produtoComDesconto = ListaDeProdutos.lista().stream()
+        BigDecimal menorPreco = ListaDeProdutos.lista().stream()
                 .filter(Produto::temDesconto)
-                .min(comparing(Produto::getPreco))
+                .map(Produto::getPreco)
+                .min(comparing(Function.identity()))
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado!"));
 
-        System.out.println(produtoComDesconto.getPreco());
+        System.out.println(menorPreco);
     }
 
-    private static void temCamisetaCinza() {
+    public static void temCamisetaCinza() {
 
         boolean camisetaCinza = ListaDeProdutos.lista().stream()
-                .anyMatch(p -> p.getNome().contains("Camiseta") && p.getCor().equals(Cor.CINZA));
+                .anyMatch(p -> p.getNome().contains("Camiseta") && Cor.CINZA.equals(p.getCor()));
         System.out.println(camisetaCinza);
     }
 
-    private static void exibeTodasCamisetasBrancas() {
+    public static void exibeTodasCamisetasBrancas() {
 
         ListaDeProdutos.lista().stream()
-                .filter(p -> p.getNome().contains("Camiseta") && p.getCor().equals(Cor.BRANCA))
+                .filter(p -> p.getNome().contains("Camiseta") && Cor.BRANCA.equals(p.getCor()))
                 .forEach(System.out::println);
     }
 
-    private static void exibeTodasCamisetas() {
+    public static void exibeTodasCamisetas() {
 
         ListaDeProdutos.lista().stream()
                 .filter(p -> p.getNome().contains("Camiseta"))
